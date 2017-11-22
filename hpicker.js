@@ -96,7 +96,16 @@ class HorizontalPicker extends Component {
     if (rangeChanged) {
       // The given children have changed
       log('rangeChanged -> resposition');
-      this.scrollToIndex(index, false);
+      if (Platform.OS === 'android') {
+        // Android fix; For some reason it only scroll a small distance. Looks
+        // pretty awful and needs a better solution, this is just to fix the
+        // out-of-sync issue.
+        setTimeout(() => {
+          this.scrollToIndex(index, false);
+        }, 1);
+      } else {
+        this.scrollToIndex(index, false);
+      }
     } else if (valueChanged) {
       log('valueChanged -> scroll');
       this.scrollToIndex(index, true);
@@ -263,7 +272,7 @@ class HorizontalPicker extends Component {
     const color = this.props.foregroundColor || defaultForegroundColor;
     return (
       <TouchableWithoutFeedback key={itemValue} onPress={v => this.handleItemPress(v)}>
-        <View style={[styles.itemContainer, {width: this.getItemWidth()}]}>
+        <View style={[styles.itemContainer, {width: this.getItemWidth()}, this.props.value !== itemValue ? {opacity: 0.5}: {}]}>
           <Text style={[styles.itemText, child.props.style, {color}]}>{child.props.label}</Text>
         </View>
       </TouchableWithoutFeedback>
