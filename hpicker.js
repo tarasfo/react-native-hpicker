@@ -18,7 +18,7 @@ const loggingEnabled = false;
 const itemPropTypes = {
   label: PropTypes.string.isRequired,
   value: PropTypes.any,
-  style: View.propTypes.style,
+  style: Text.propTypes.style,
   foregroundColor: PropTypes.string,
 };
 const itemDefaultProps = {
